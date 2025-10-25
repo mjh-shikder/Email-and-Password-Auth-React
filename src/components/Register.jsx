@@ -12,7 +12,34 @@ const Register = () => {
 
         const email = e.target.email.value;
         const password = e.target.password.value;
-        console.log(email, password);
+      console.log(email, password);
+      
+      // const length6Pattern = /^.{6,}$/;
+      // const casePattertn = /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z]{6}$/;
+      // const specialCharecter = /^(?=.*[!@#$%^&*(),.?":{}|<>]).+$/;
+
+
+
+      // if (!length6Pattern.test(password)) {
+      //   console.log('password did not match');
+      //   setError('Password must be atleast 6 charecters')
+      //   return;
+      // }
+      // else if (!casePattertn.test(password)) {
+      //   setError('Password must have atleas one upper and one lower case charecter')
+      //   return;
+      // }
+      // else if (!specialCharecter.test(password)) {
+      //   setError('Password Must contain one special charecter (e.g. !@#$%^&)')
+      //   return;
+      // }
+
+      const passwordPattern = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/
+      
+      if (!passwordPattern.test(password)) {
+        setError('Password must be at least 6 characters long and include at least one uppercase letter, one lowercase letter, and one special character (!@#$%^&*).')
+        return;
+      }
 
       // reset status: success or error
       setError('');
@@ -22,6 +49,7 @@ const Register = () => {
             .then(result => {
               console.log('after creating a new user', result);
               setSuccess(true);
+              e.target.reset()
                 
             })
             .catch(error => {
