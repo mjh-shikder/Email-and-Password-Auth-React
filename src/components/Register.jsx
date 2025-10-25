@@ -1,10 +1,12 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import React, { useState } from 'react';
 import { auth } from '../firebase/firebase.init';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 const Register = () => {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
     const handleRegister = (e) => {
     
@@ -59,7 +61,10 @@ const Register = () => {
         })            
 }
 
-
+  const handleTogglePasswordShow = (e) => {
+    e.preventDefault();
+    setShowPassword(!showPassword);
+}
 
     return (
                
@@ -79,7 +84,18 @@ const Register = () => {
           <label className="label">Email</label>
           <input type="email" className="input" placeholder="Email" name='email' />
           <label className="label">Password</label>
-          <input type="password" className="input" placeholder="Password" name='password' />
+          <div className='relative'>
+                    <input
+                      type={showPassword ? 'text' : 'password' }
+                      className="input"
+                      placeholder="Password"
+                      name='password' />
+                    <button
+                      onClick={handleTogglePasswordShow}
+                      className="btn btn-xs absolute top-2 right-6">
+                      {showPassword ? <FaEyeSlash></FaEyeSlash> : <FaEye></FaEye>}
+                      </button>
+          </div>
           <div><a className="link link-hover">Forgot password?</a></div>
           <button className="btn btn-neutral mt-4">Register</button>
                 </fieldset>
