@@ -1,4 +1,4 @@
-import { createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../firebase/firebase.init";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
@@ -15,7 +15,9 @@ const Register = () => {
     const email = e.target.email.value;
     const password = e.target.password.value;
     const terms = e.target.terms.checked;
-    console.log(email, password, terms);
+    const name = e.target.name.value;
+    const photo = e.target.photo.value;
+    console.log('halde regiset', email, password, terms, name, photo);
 
     // const length6Pattern = /^.{6,}$/;
     // const casePattertn = /^(?=.*[a-z])(?=.*[A-Z])[A-Za-z]{6}$/;
@@ -56,9 +58,19 @@ const Register = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
-        console.log("after creating a new user", result);
+        console.log("after creating a new user", result.user);
         setSuccess(true);
         e.target.reset();
+        // update user profile 
+        const profile = {
+          displayName: name,
+          photoURL: photo,
+        }
+        updateProfile(result.user, profile)
+        .then(()=>{})
+        .catch()
+        
+        
         // send verification email 
         sendEmailVerification(result.user)
           .then(() => {
@@ -92,6 +104,23 @@ const Register = () => {
           <div className="card-body">
             <form onSubmit={handleRegister}>
               <fieldset className="fieldset">
+                {/* user name */}
+                <label className="label">Name</label>
+                <input
+                  type="name"
+                  className="input"
+                  placeholder="Your Name"
+                  name="name"
+                />
+                {/* user Photo url */}
+                <label className="label">Photo URL</label>
+                <input
+                  type="text"
+                  className="input"
+                  placeholder="Photo URL"
+                  name="photo"
+                />
+                {/* User Email */}
                 <label className="label">Email</label>
                 <input
                   type="email"
